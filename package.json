@@ -1,0 +1,33 @@
+{
+  "name": "election-results-tileserver",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "source environment && yarn babel-watch src/index.js",
+    "build": "yarn babel -d dist/ src/",
+    "clean": "yarn rimraf dist/",
+    "start": "source environment && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adrian Frith <adrian@adrianfrith.com>",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "babel-watch": "^7.0.0",
+    "nodemon": "^1.19.0",
+    "rimraf": "^2.6.3"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.0",
+    "morgan": "^1.9.1",
+    "pg-connection-string": "^2.0.0",
+    "tilestrata": "^2.1.2",
+    "tilestrata-lru": "^0.2.0",
+    "tilestrata-postgismvt": "https://github.com/afrith/tilestrata-postgismvt.git#acbee28",
+    "winston": "^3.2.1"
+  }
+}

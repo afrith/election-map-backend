@@ -1,0 +1,2 @@
+export PG_CONNSTRING=postgres://localhost/election-results
+export PORT=4000
