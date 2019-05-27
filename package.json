@@ -24,10 +24,15 @@
     "cors": "^2.8.5",
     "express": "^4.17.0",
     "morgan": "^1.9.1",
+    "pg": "^7.11.0",
     "pg-connection-string": "^2.0.0",
     "tilestrata": "^2.1.2",
     "tilestrata-lru": "^0.2.0",
     "tilestrata-postgismvt": "https://github.com/afrith/tilestrata-postgismvt.git#acbee28",
     "winston": "^3.2.1"
+  },
+  "engines": {
+    "node": "10.15.3",
+    "yarn": "1.16.0"
   }
 }
