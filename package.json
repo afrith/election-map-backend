@@ -6,7 +6,7 @@
     "dev": "source environment && yarn babel-watch src/index.js",
     "build": "yarn babel -d dist/ src/",
     "clean": "yarn rimraf dist/",
-    "start": "source environment && node dist/index.js",
+    "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Adrian Frith <adrian@adrianfrith.com>",
