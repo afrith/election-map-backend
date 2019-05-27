@@ -28,7 +28,7 @@
     "pg-connection-string": "^2.0.0",
     "tilestrata": "^2.1.2",
     "tilestrata-lru": "^0.2.0",
-    "tilestrata-postgismvt": "https://github.com/afrith/tilestrata-postgismvt.git#acbee28",
+    "tilestrata-postgismvt": "https://github.com/afrith/tilestrata-postgismvt.git#a15060c",
     "winston": "^3.2.1"
   },
   "engines": {
