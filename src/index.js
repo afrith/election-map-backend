@@ -60,6 +60,75 @@ pgPool.query("SELECT e.id, e.code FROM election e JOIN election_type et ON e.typ
       prefix: '/tiles'
     }))
 
+    const electionCodes = result.rows.map(r => r.code)
+
+    app.get('/:election/:ballot/:level/:code', function (req, res, next) {
+      const { election, ballot, level, code } = req.params
+      if  ( !electionCodes.includes(election)
+            || !['nat', 'prov'].includes(ballot)
+            || !structureCodes.includes(level))
+      {
+        return res.sendStatus(404)
+      }
+
+      const results = {election, ballot, level, code}
+
+      let q1;
+      if (level === 'ward') {
+        q1 = `
+          SELECT ward.id, muni.name || ' Ward ' || (right(ward.code, 3)::int) as name,
+            e.regpop, b.valid, b.spoilt, b.total
+          FROM ward_ballot_total b
+            JOIN ward_election e ON b.ward_id = e.ward_id AND b.election_id = e.election_id
+            JOIN ward ON b.ward_id = ward.id
+            JOIN muni ON ward.muni_id = muni.id
+            JOIN election ON b.election_id = election.id
+            JOIN ballot ON b.ballot_id = ballot.id
+          WHERE election.code = $1::text
+            AND ballot.code = $2::text
+            AND ward.code = $3::text
+        `
+      } else {
+        q1 = `
+          SELECT s.id, s.name, e.regpop, b.valid, b.spoilt, b.total
+          FROM ${level}_ballot_total b
+            JOIN ${level}_election e ON b.${level}_id = e.${level}_id AND b.election_id = e.election_id
+            JOIN ${level} s ON b.${level}_id = s.id
+            JOIN election ON b.election_id = election.id
+            JOIN ballot ON b.ballot_id = ballot.id
+          WHERE election.code = $1::text
+            AND ballot.code = $2::text
+            AND s.code = $3::text
+        `
+      }
+
+      pgPool.query(q1, [election, ballot, code])
+        .then(qres => {
+          if (qres.rows.length === 0) {
+            return res.sendStatus(404)
+          }
+          Object.assign(results, qres.rows[0])
+
+          return pgPool.query(`
+            SELECT party.name, party.abbrev, votes
+            FROM ${level}_vote v
+              JOIN election ON v.election_id = election.id
+              JOIN ballot ON v.ballot_id = ballot.id
+              JOIN party ON v.party_id = party.id
+            WHERE ${level}_id = $1::int
+              AND election.code = $2::text
+              AND ballot.code = $3::text
+          `, [results.id, election, ballot])
+        })
+        .then(qres => {
+          delete results.id
+          results.parties = qres.rows
+
+          res.json(results)
+        })
+        .catch(err => next(err))
+    })
+
     const port = process.env.PORT || 3000
     app.listen(port, () => {winston.info(`Listening on port ${port}`)})
   })
