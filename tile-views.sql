@@ -1,12 +1,13 @@
+DROP MATERIALIZED VIEW tiles.vd;
 CREATE MATERIALIZED VIEW tiles.vd AS
 SELECT 
   vd.id,
   natwin.election_id,
   vd.code,
   COALESCE(natp.abbrev, 'TIE') as nat_win_party,
-  natwin.perc::float as nat_win_perc,
+  floor(natwin.perc)::int as nat_win_perc,
   COALESCE(provp.abbrev, 'TIE') as prov_win_party,
-  provwin.perc::float as prov_win_perc,
+  floor(provwin.perc)::int as prov_win_perc,
   vd.geom
 FROM vd
   JOIN vd_single_winner natwin ON vd.id = natwin.vd_id and natwin.ballot_id = 1
