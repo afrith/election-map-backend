@@ -16,7 +16,7 @@ import postgismvt from 'tilestrata-postgismvt'
 import lru from 'tilestrata-lru'
 var strata = tilestrata()
 
-const pgConfig = pgConnString.parse(process.env.PG_CONNSTRING)
+const pgConfig = pgConnString.parse(process.env.DATABASE_URL)
 const pgPool = new Pool(pgConfig)
 types.setTypeParser(20, parseInt)
 types.setTypeParser(23, parseInt)
