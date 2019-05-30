@@ -31,7 +31,7 @@ const lyrOpts = {
   buffer: 10,
   resolution: 4096,
   table: 'tbl',
-  fields: 'code nat_win_party nat_win_perc prov_win_party prov_win_perc nat_anc prov_anc nat_da prov_da nat_eff prov_eff nat_ifp prov_ifp nat_vfplus prov_vfplus'
+  fields: 'code nat_win_party nat_win_perc prov_win_party prov_win_perc nat_turnout prov_turnout nat_anc prov_anc nat_da prov_da nat_eff prov_eff nat_ifp prov_ifp nat_vfplus prov_vfplus'
 }
 
 const cache = lru({size: '128mb', ttl: 300})
