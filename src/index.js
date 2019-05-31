@@ -13,7 +13,7 @@ app.use(morgan("combined", { stream: { write: message => winston.info(message.tr
 
 import tilestrata from 'tilestrata'
 import postgismvt from 'tilestrata-postgismvt'
-import lru from 'tilestrata-lru'
+import disk from 'tilestrata-disk'
 var strata = tilestrata()
 
 const pgConfig = pgConnString.parse(process.env.DATABASE_URL)
@@ -34,8 +34,6 @@ const lyrOpts = {
   fields: 'code nat_win_party nat_win_perc prov_win_party prov_win_perc nat_turnout prov_turnout nat_anc prov_anc nat_da prov_da nat_eff prov_eff nat_ifp prov_ifp nat_vfplus prov_vfplus'
 }
 
-const cache = lru({size: '128mb', ttl: 300})
-
 pgPool.query("SELECT e.id, e.code FROM election e JOIN election_type et ON e.type_id = et.id WHERE et.name = 'General Election'")
   .then(result => {
     const structureCodes = ['vd', 'ward', 'muni', 'dist', 'prov']
@@ -51,7 +49,7 @@ pgPool.query("SELECT e.id, e.code FROM election e JOIN election_type et ON e.typ
             lyr,
             pgConfig
           }))
-          .use(cache)
+          .use(disk.cache({dir: `${process.env.TILECACHE_DIR}/${struct}_${row.code}`}))
       }
     }
 
