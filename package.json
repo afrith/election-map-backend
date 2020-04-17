@@ -27,12 +27,11 @@
     "pg": "^7.11.0",
     "pg-connection-string": "^2.0.0",
     "tilestrata": "^2.1.2",
-    "tilestrata-disk": "https://github.com/afrith/tilestrata-disk.git#fa34014",
-    "tilestrata-postgismvt": "https://github.com/afrith/tilestrata-postgismvt.git#a15060c",
+    "tilestrata-disk": "git+https://github.com/afrith/tilestrata-disk.git#fa34014",
+    "tilestrata-postgismvt": "git+https://github.com/afrith/tilestrata-postgismvt.git#a15060c",
     "winston": "^3.2.1"
   },
   "engines": {
-    "node": "10.15.3",
-    "yarn": "1.16.0"
+    "node": "12.16.2"
   }
 }
