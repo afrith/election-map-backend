@@ -13,25 +13,25 @@
   "license": "MIT",
   "private": false,
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
-    "babel-watch": "^7.0.0",
-    "nodemon": "^1.19.0",
-    "rimraf": "^2.6.3"
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "babel-watch": "^7.6.0",
+    "nodemon": "^2.0.14",
+    "rimraf": "^3.0.2"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.0",
     "morgan": "^1.9.1",
-    "pg": "^7.11.0",
-    "pg-connection-string": "^2.0.0",
-    "tilestrata": "^2.1.2",
+    "pg": "^8.7.1",
+    "pg-connection-string": "^2.5.0",
+    "tilestrata": "^2.3.2",
     "tilestrata-disk": "git+https://github.com/afrith/tilestrata-disk.git#fa34014",
     "tilestrata-postgismvt": "git+https://github.com/afrith/tilestrata-postgismvt.git#a15060c",
-    "winston": "^3.2.1"
+    "winston": "^3.3.3"
   },
   "engines": {
-    "node": "12.16.2"
+    "node": "16.13.0"
   }
 }
