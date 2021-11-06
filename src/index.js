@@ -22,7 +22,7 @@ types.setTypeParser(20, parseInt)
 types.setTypeParser(23, parseInt)
 types.setTypeParser(1700, parseFloat)
 
-const lyrOpts = {
+const lyrOpts_npe = {
   geometry: 'geom',
   type: 'poly',
   srid: 4326,
@@ -46,42 +46,25 @@ const lyrOpts_lge = {
   fields: 'code ward_win_party ward_win_perc pr_win_party pr_win_perc ward_turnout pr_turnout ward_anc pr_anc ward_da pr_da ward_eff pr_eff ward_ifp pr_ifp ward_vfplus pr_vfplus'
 }
 
-pgPool.query("SELECT e.id, e.code FROM election e JOIN election_type et ON e.type_id = et.id WHERE et.name = 'General Election'")
+pgPool.query("SELECT e.id, e.code, et.name as etype FROM election e JOIN election_type et ON e.type_id = et.id WHERE et.name in ('General Election', 'Local Government Election')")
   .then(result => {
     const structureCodes = ['vd', 'ward', 'muni', 'dist', 'prov']
 
     for (const row of result.rows) {
       for (const struct of structureCodes) {
-        const lyr = {
-          ...lyrOpts,
-          table_query: `SELECT * FROM tiles.${struct} WHERE election_id = ${row.id}`
-        }
+        const lyr = (row.etype === 'Local Government Election') ? {
+            ...(lyrOpts_lge),
+            table_query: `SELECT * FROM tiles.${struct}_lge WHERE election_id = ${row.id}`
+          } : {
+            ...(lyrOpts_npe),
+            table_query: `SELECT * FROM tiles.${struct} WHERE election_id = ${row.id}`
+          }
         strata.layer(`${struct}_${row.code}`).route('tile.mvt')
           .use(postgismvt({
             lyr,
             pgConfig
           }))
           .use(disk.cache({dir: `${process.env.TILECACHE_DIR}/${struct}_${row.code}`}))
-      }
-    }
-
-    return pgPool.query("SELECT e.id, e.code FROM election e JOIN election_type et ON e.type_id = et.id WHERE et.name = 'Local Government Election'")
-  })
-  .then(result => {
-    const structureCodes = ['vd', 'ward', 'muni', 'dist', 'prov']
-
-    for (const row of result.rows) {
-      for (const struct of structureCodes) {
-        const lyr = {
-          ...lyrOpts_lge,
-          table_query: `SELECT * FROM tiles.${struct}_lge WHERE election_id = ${row.id}`
-        }
-        strata.layer(`${struct}_${row.code}`).route('tile.mvt')
-          .use(postgismvt({
-            lyr,
-            pgConfig
-          }))
-          .use(disk.cache({ dir: `${process.env.TILECACHE_DIR}/${struct}_${row.code}` }))
       }
     }
 
