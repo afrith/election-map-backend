@@ -31,7 +31,7 @@ const lyrOpts_npe = {
   buffer: 10,
   resolution: 4096,
   table: 'tbl',
-  fields: 'code nat_win_party nat_win_perc prov_win_party prov_win_perc nat_turnout prov_turnout nat_anc prov_anc nat_da prov_da nat_eff prov_eff nat_ifp prov_ifp nat_vfplus prov_vfplus'
+  fields: 'code nat_win_party nat_win_perc reg_win_party reg_win_perc prov_win_party prov_win_perc nat_turnout reg_turnout prov_turnout nat_anc reg_anc prov_anc nat_da reg_da prov_da nat_eff reg_eff prov_eff nat_ifp reg_ifp prov_ifp nat_vfplus reg_vfplus prov_vfplus nat_mk reg_mk prov_mk'
 }
 
 const lyrOpts_lge = {
@@ -78,7 +78,7 @@ pgPool.query("SELECT e.id, e.code, et.name as etype FROM election e JOIN electio
     app.get('/:election/:ballot/:level/:code', function (req, res, next) {
       const { election, ballot, level, code } = req.params
       if  ( !electionCodes.includes(election)
-        || !['nat', 'prov', 'ward', 'pr'].includes(ballot)
+        || !['nat', 'reg', 'prov', 'ward', 'pr'].includes(ballot)
         || !structureCodes.includes(level))
       {
         return res.sendStatus(404)
