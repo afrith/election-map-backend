@@ -28,7 +28,7 @@ The service also provides an endpoint to fetch full details of election results 
 
 ## Running
 
-To run the service you need the data, which can be downloaded [here](https://stuff.adrianfrith.com/election-results-20190530.pg_dump) as a 1GB PostgreSQL dump file. Then you need to set three environment variables.
+To run the service you need the data, which can be downloaded [here](https://stuff.adrianfrith.com/election-results-2024.dump) as a 1.5GB PostgreSQL dump file. Then you need to set three environment variables.
 
 * `DATABASE_URL` is the URL of the PostgreSQL database (e.g. `postgres://localhost/election-results`).
 * `TILECACHE_DIR` is the location of a directory to use to cache MVTs - since the data is unchanging the tiles never expire; if you need to clear the cache, delete the contents of this directory.
